@@ -19,7 +19,10 @@ def hello_world():  # put application's code here
 @app.route('/template')
 def render():
     template = env.get_template('test.html')
-    return template.render(var1='hello', var2='world!')
+    map = {}
+    map["var1"] = 'hello'
+    map["var2"] = 'world!'
+    return template.render(map=map)
 
 @app.route('/test')
 def test():  # put application's code here
