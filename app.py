@@ -5,6 +5,8 @@ import CredentialLoader
 import DBConnector
 from jinja2 import Environment, PackageLoader, select_autoescape
 
+from obj.Map import Map
+
 app = Flask(__name__)
 
 credentials = {}
@@ -19,9 +21,9 @@ def hello_world():  # put application's code here
 @app.route('/template')
 def render():
     template = env.get_template('test.html')
-    map = {}
-    map["var1"] = 'hello'
-    map["var2"] = 'world!'
+    map = Map()
+    map.put("var1", 'hello')
+    map.put('var2', 'world!')
     return template.render(map=map)
 
 @app.route('/test')
