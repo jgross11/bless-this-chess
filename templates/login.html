@@ -1,4 +1,7 @@
-<form action="/submit-login" method="post">
+{%if map.containsKey('notif')%}
+<div>{{map.get('notif')}}</div>
+{%endif%}
+<form action="/login" method="post">
     Username: <br>
     <input name="username" type="text"/><br>
     Password: <br>
