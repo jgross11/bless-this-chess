@@ -26,9 +26,10 @@ def login():
     if request.method == 'POST':
         print("submitted login information")
         print(request.form)
-        submittedUsername = request.form.get("username")
-        submittedPassword = request.form.get("password")
-        if users["username"]==submittedUsername and users["password"]==submittedPassword:
+        username = request.form.get("username")
+        password = request.form.get("password")
+        loginData = DBConnector.findUserByUsernamePassword(username, password)
+        if loginData != None:
             return redirect('/') 
         else:
             template = env.get_template('login.html')
@@ -60,18 +61,21 @@ if __name__ == '__main__':
         print("No credentials = no soup for you!")
     else:
         print("successfully loaded credentials")
-        DBConnector.openConnection(
+        print("initializing db properties")
+        if DBConnector.init(
             credentials[CredentialLoader.MYSQL_USERNAME],
             credentials[CredentialLoader.MYSQL_ROOT_PASSWORD],
             credentials[CredentialLoader.MYSQL_HOST],
             credentials[CredentialLoader.MYSQL_DB],
-        )
-        DBConnector.closeConnection()
-        print("creating Jinja2 environment")
-        env = Environment(
-            loader=PackageLoader('app', 'templates'),
-            autoescape=select_autoescape(['html', 'xml'])
-        )
-        print("created Jinja2 environment")
-        print("starting Flask")
-        app.run()
+        ):
+            print("db test connection successful")
+            print("creating Jinja2 environment")
+            env = Environment(
+                loader=PackageLoader('app', 'templates'),
+                autoescape=select_autoescape(['html', 'xml'])
+            )
+            print("created Jinja2 environment")
+            print("starting Flask")
+            app.run()
+        else: 
+            print("db test connection failed")
