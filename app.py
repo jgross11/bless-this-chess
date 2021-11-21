@@ -39,7 +39,6 @@ def login():
         print("navigating to login page")
         template = env.get_template('login.html')
         map = Map()
-        map.put("notif","")
         return template.render(map=map)
 
 @app.route('/template')

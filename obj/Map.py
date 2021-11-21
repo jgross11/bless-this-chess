@@ -9,5 +9,5 @@ class Map:
         return self.internalMap[key]
 
     def containsKey(self, key):
-        return self.internMap[key] != None
+        return key in self.internalMap
     
