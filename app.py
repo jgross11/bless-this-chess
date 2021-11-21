@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, redirect
 import random
 
 import CredentialLoader
@@ -21,13 +21,26 @@ def hello_world():  # put application's code here
     print("navigating to home page")
     return "Look at this! Its a random number: " + str(random.randrange(0, 99999999999))
 
-@app.route('/submit-login', methods = ['POST'])
-def verify_login():
-    print("submitted login information")
-    print(request.form)
-    submittedUsername = request.form.get("username")
-    submittedPassword = request.form.get("password")
-    return "Login Successful" if users["username"] == submittedUsername and users["password"] == submittedPassword  else "Login failed"
+@app.route('/login', methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        print("submitted login information")
+        print(request.form)
+        submittedUsername = request.form.get("username")
+        submittedPassword = request.form.get("password")
+        if users["username"]==submittedUsername and users["password"]==submittedPassword:
+            return redirect('/') 
+        else:
+            template = env.get_template('login.html')
+            map = Map()
+            map.put("notif",'Incorrect username or password. Please try again.')
+            return template.render(map=map)
+    else:
+        print("navigating to login page")
+        template = env.get_template('login.html')
+        map = Map()
+        map.put("notif","")
+        return template.render(map=map)
 
 @app.route('/template')
 def render():
@@ -36,12 +49,6 @@ def render():
     map.put("var1", 'hello')
     map.put('var2', 'world!')
     return template.render(map=map)
-
-@app.route('/login')
-def login():
-    print("navigating to login page")
-    template = env.get_template('login.html')
-    return template.render()
 
 @app.route('/test')
 def test():  # put application's code here
