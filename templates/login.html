@@ -1,10 +1,21 @@
-{%if map.containsKey('notif')%}
-<div>{{map.get('notif')}}</div>
-{%endif%}
-<form action="/login" method="post">
-    Username: <br>
-    <input name="username" type="text"/><br>
-    Password: <br>
-    <input name="password" type="password"/><br>
-    <button>Log in</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <head>
+        <title>Welcome to chess!</title>
+        <link rel="stylesheet" href="../static/css/basic.css">
+    </head>
+    <body>
+        <form action="/login" method="post" style="width:530px;margin:auto;margin-top:40px;padding-bottom:60px">
+            <h1>Welcome to chess!</h1><hr>
+            {%if map.containsKey('notif')%}
+            <div class="notif">{{map.get('notif')}}</div>
+            {%endif%}
+            Username: <br>
+            <input name="username" type="text"/><br>
+            Password: <br>
+            <input name="password" type="password"/><br>
+            <button>Log in</button>
+        </form>
+    </body>
+</html>
