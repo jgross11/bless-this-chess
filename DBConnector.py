@@ -1,4 +1,3 @@
-from flask.json.tag import PassDict
 import mysql.connector
 
 username = None
