@@ -1,13 +1,13 @@
 from flask import Flask, request, redirect
 import random
 
-import CredentialLoader
-import DBConnector
+from src.init.CredentialLoader import CredentialLoader
+from src.init.DBConnector import DBConnector
+from src.obj.Utils import Map
 from jinja2 import Environment, PackageLoader, select_autoescape
 
-from obj.Map import Map
-
-app = Flask(__name__)
+app = Flask(__name__, static_folder='./src/view/static')
+dbConnector = None
 
 credentials = {}
 
@@ -28,7 +28,7 @@ def login():
         print(request.form)
         username = request.form.get("username")
         password = request.form.get("password")
-        loginData = DBConnector.findUserByUsernamePassword(username, password)
+        loginData = dbConnector.findUserByUsernamePassword(username, password)
         if loginData != None:
             return redirect('/') 
         else:
@@ -56,22 +56,24 @@ def test():  # put application's code here
 
 if __name__ == '__main__':
     print("loading credentials...")
-    credentials = CredentialLoader.load()
+    credentialLoader = CredentialLoader()
+    credentials = credentialLoader.loadCredentials()
     if credentials == None:
         print("No credentials = no soup for you!")
     else:
         print("successfully loaded credentials")
         print("initializing db properties")
-        if DBConnector.init(
-            credentials[CredentialLoader.MYSQL_USERNAME],
-            credentials[CredentialLoader.MYSQL_ROOT_PASSWORD],
-            credentials[CredentialLoader.MYSQL_HOST],
-            credentials[CredentialLoader.MYSQL_DB],
+        dbConnector = DBConnector()
+        if dbConnector.init(
+            credentials[credentialLoader.MYSQL_USERNAME],
+            credentials[credentialLoader.MYSQL_ROOT_PASSWORD],
+            credentials[credentialLoader.MYSQL_HOST],
+            credentials[credentialLoader.MYSQL_DB],
         ):
             print("db test connection successful")
             print("creating Jinja2 environment")
             env = Environment(
-                loader=PackageLoader('app', 'templates'),
+                loader=PackageLoader('src.view', 'templates'),
                 autoescape=select_autoescape(['html', 'xml'])
             )
             print("created Jinja2 environment")
