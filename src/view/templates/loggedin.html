@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <head>
+        <title>User Homepage</title>
+        <link rel="stylesheet" href="../static/css/basic.css">
+    </head>
+    <body>
+        <h1>User Homepage</h1><hr>
+        <div style="width: 30vw; height: 25vh; float:left">
+            <h3>Recent Games</h3>
+            <ul>
+                <li>Game 1 info</li>
+                <li>...</li>
+                <li>Game n info</li>
+            </ul><hr>
+        </div>
+        <div style="width: 30vw; height: 25vh; float:right">
+            <h3>Ratings</h3>
+            <ul>
+                <li>Gamemode 1 rating</li>
+                <li>...</li>
+                <li>Gamemode n rating</li>
+            </ul><hr>
+        </div>
+        <div style="width: 30vw; height: 25vh; float:left">
+            <h3>Custom Pieces</h3>
+            <ul>
+                <li>Custom piece 1 info</li>
+                <li>...</li>
+                <li>Custom piece n info</li>
+            </ul><hr>
+        </div>
+        <div style="width: 30vw; height: 25vh; float:right">
+            <h3>Custom Variants</h3>
+            <ul>
+                <li>Variant 1 info</li>
+                <li>...</li>
+                <li>Variant n info</li>
+            </ul><hr>
+        </div>
+        <div style="width: 30vw; height: 25vh; float:left">
+            <h3>Friends</h3>
+            <ul>
+                <li>Friend 1 info</li>
+                <li>...</li>
+                <li>Friend n info</li>
+            </ul>
+        </div>
+    </body>
+    <script>
+        fetch('/resttest') // test a rest call on backend
+        .then(resp => resp.json()) // get response content from response data
+        .then(data => console.log(`Received data from rest call: ${data}`))
+    </script>
+</html>

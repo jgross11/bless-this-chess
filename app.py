@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, jsonify
 import random
 
 from src.init.CredentialLoader import CredentialLoader
@@ -20,6 +20,16 @@ users = {"username" : "testusername", "password" : "testpassword"}
 def hello_world():  # put application's code here
     print("navigating to home page")
     return "Look at this! Its a random number: " + str(random.randrange(0, 99999999999))
+
+@app.route('/resttest')
+def rest_test():
+    return jsonify("data obtained from rest call!")
+
+@app.route('/loggedin')
+def logged_in():
+    map = Map()
+    template = env.get_template("loggedin.html")
+    return template.render(map=map)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
