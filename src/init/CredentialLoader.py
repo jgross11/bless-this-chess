@@ -7,8 +7,8 @@ class CredentialLoader:
     MYSQL_USERNAME = "MYSQL_USERNAME"
     MYSQL_DB = "MYSQL_DB"
 
-    def loadCredentials(self):
-        ENV_PATH = "config/"
+    def loadCredentials(self, path = "./"):
+        ENV_PATH = path
         ENV_NAME = ".env"
         result = {}
         with open(ENV_PATH + ENV_NAME) as file:

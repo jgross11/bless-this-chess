@@ -58,3 +58,69 @@ class DBConnector:
             print("error when querying for user information: {}".format(error))
         finally:
             self.closeConnectionAndCursor(conn, cursor)
+
+    def usernameTaken(self, username):
+        conn = None
+        cursor = None
+        try: 
+            print('checking if {} in db as username'.format(username))
+            conn = self.openConnection()
+            if(conn != None):
+                cursor = conn.cursor(prepared=True)
+                query = '''SELECT username FROM users WHERE username=%s LIMIT 1'''
+                cursor.execute(query, (username,))
+                data = cursor.fetchone()
+                return True if data else False
+            else:
+                print('error opening connection when checking if username exists in db')
+                return True
+
+        except mysql.connector.Error as error:
+            print("error when checking if username exists in db: {}".format(error))
+            return True
+        finally:
+            self.closeConnectionAndCursor(conn, cursor)
+
+    def emailTaken(self, email):
+        conn = None
+        cursor = None
+        try: 
+            print('checking if {} in db as email'.format(email))
+            conn = self.openConnection()
+            if(conn != None):
+                cursor = conn.cursor(prepared=True)
+                query = '''SELECT email FROM users WHERE email=%s LIMIT 1'''
+                cursor.execute(query, (email,))
+                data = cursor.fetchone()
+                return True if data else False
+            else:
+                print('error opening connection when checking if email exists in db')
+                return True
+
+        except mysql.connector.Error as error:
+            print("error when checking if email exists in db: {}".format(error))
+            return True
+        finally:
+            self.closeConnectionAndCursor(conn, cursor)
+
+    def insertNewUser(self, username, password, email):
+        conn = None
+        cursor = None
+        try: 
+            print('creating new user in db with information username={}, password={}, email={}'.format(username, password, email))
+            conn = self.openConnection()
+            if(conn != None):
+                cursor = conn.cursor(prepared=True)
+                query = '''INSERT INTO users (username, password, email) VALUES (%s, %s, %s)'''
+                cursor.execute(query, (username, password, email))
+                conn.commit()
+                return True
+            else:
+                print('error opening connection when inserting new user')
+                return False
+
+        except mysql.connector.Error as error:
+            print("error when inserting new user: {}".format(error))
+            return False
+        finally:
+            self.closeConnectionAndCursor(conn, cursor)
