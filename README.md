@@ -8,7 +8,7 @@
 
 3. Run buildAllWindows.bat in `/config` (non windows users, manually run command within the batch file). This creates a Docker container which runs a MySQL DB instance (and any images that need to be added in the future..).
 
-4. Run createDatabase.py in `/config` with the command `python \.createDatabase.py` - this creates the necessary tables for the project within the db and inserts any relevant test data into the tables.
+4. Run createDatabase.py in `/config` with the command `python \.createDatabase.py` - this creates the necessary tables for the project within the db and inserts any relevant test data into the tables. This can also be re-ran to initialize a clean working copy of the database, should your testing corrupt it ;)
 
 5. Depending on your Python install / environment, you may or may not have to manually download the modules used in the project (Flask, Jinja, etc.). You can do so using the command `pip install module-name`, provided you have Pip installed. 
 
