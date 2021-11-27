@@ -1,0 +1,53 @@
+pawn
+first turn: forward two if nothing blocking
+every turn: forward one if nothing blocking
+every turn: diagonally forward one if enemy piece resides on tile
+en passant: diagonally forward one if previous move was enemy pawn forward two to skip one diagonally forward tile - this is a game rule imposed on a pawn
+promotion: change to different piece upon reaching back row of enemy board - this is a game rule imposed on a pawn
+
+rook
+every turn: horizontal or vertical n if nothing blocking
+every turn: move can be capture
+castling: see king criteria
+
+knight
+every turn: L shape - two up, one over, one up, two over, two down, one over, one down, two over
+every turn: move can be capture
+
+bishop
+every turn: diagonally forward or backward n if nothing blocking
+every turn: move can be capture
+
+queen
+every turn: diagonally forward or backward n if nothing blocking
+every turn: horizontal or vertical n if nothing blocking
+every turn: move can be capture
+
+king
+every turn: diagonally forward or backward 1
+every turn: horizontal or vertical 1
+every turn: must not put king in check
+castling: if king not moved, king not in check, and rook not moved, and line of sight between king and rook not attackable by enemy piece, move king two, rook one (kingside) or move king three, rook two (queenside) in one turn. - this is a game rule imposed on a pawn
+constraint: must get king out of check if in check and if possible in classic gamemode
+
+
+move types: 
+first turn, every turn, en passant, castling, constraint
+first turn - conditional
+every turn - duh
+en passant - conditional
+castling - conditional
+constraint - this is a game rule i.e. classic gamerule: must get king out of check if in check and possible to move out
+
+proposed move class structure:
+move rule: the actual movement of the piece i.e. L shape, variable diagonal, etc.
+move presups: additional information requested to determine if move is valid (en passant - what was the last move; castling - is path checkable?)
+constraint(s): conditions that must be met for this move to be valid i.e. en passant, castling, etc.
+
+proposed piece class structure:
+sprite: image to display graphically for this piece
+name: piece name
+uid: numeric identifier for specific type of piece (i.e. pieces may share name, but piece name + uid uniquely identifies piece)
+move list: list of predefined moves
+
+may be nice to model move rules and constraints declaratively, if possible........................

@@ -1,0 +1,43 @@
+classic:
+    constraint: check exists
+        constraint: if put in check, must move out of check if possible
+    constraint: cannot capture own piece
+    feature: pawn promotes upon reaching back row
+    feature: en passant allowed
+    feature: castling allowed
+    stalemate condition: a player cannot make a move that doesn't put them in check
+    draw condition: neither person is able to checkmate
+    win condition: checkmate - player wins when other player cannot escape check
+
+crazyhorse:
+    feature: upon capturing a piece, obtain a playable copy of the piece
+        feature: can place captured piece (almost) anywhere on board
+        constraint: pawns that promoted are playable as pawns when captured
+    all classic rules apply (mostly?)
+
+shuffle:
+    feature: pieces are randomly placed upon game creation
+    all classic rules apply (mostly?)
+
+atomic:
+    feature: one tile explosion upon capture that destroys occupants of neighboring tiles
+        constraint: pawns can cause explosion, but are not destroyed by it unless they are part of the cause
+    all classic rules apply except king need not be moved out of check, can move into check
+
+torpedo:
+    feature: pawns can always move two or one forward
+    feature: pawns can move sideways one tile
+
+
+game rule category
+feature, constraint, win condition, draw condition, stalemate condition
+
+note: game rules can have their own sub rules
+note: distinction between game rule template and instance of game rule
+i.e. template: additional move for piece, instance: pawns move sideways (torpedo)
+
+proposed game rule structure:
+category: category of the rule
+template: generic rule purpose (function?)
+subrules: rules that influence this rule's functionality
+parameters: information that creates concrete game rule instance from template, based on game information 
