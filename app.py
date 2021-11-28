@@ -54,6 +54,15 @@ def render():
 def test():  # put application's code here
     return "would you look at that, a new page!"
 
+@app.errorhandler(404)
+@app.errorhandler(405)
+@app.errorhandler(500)
+def pageNotFound(error):
+    template = env.get_template('error.html')
+    map = Map()
+    map.put("error", error)
+    return template.render(map=map)
+
 if __name__ == '__main__':
     print("loading credentials...")
     credentialLoader = CredentialLoader()
