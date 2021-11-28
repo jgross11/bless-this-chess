@@ -24,6 +24,10 @@ form {
     background-color:white;
 }
 
+.error{
+    color: red
+}
+
 footer {
     font-size:10pt;
     margin-top:50px;

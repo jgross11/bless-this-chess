@@ -1,33 +1,64 @@
-import CredentialLoader
-import DBConnector
+import sys
+sys.path.append("..")
+from src.init.CredentialLoader import CredentialLoader
+from src.init.DBConnector import DBConnector
+
 
 if __name__ == '__main__':
-    credentials = CredentialLoader.load()
-    DBConnector.init(
-            credentials[CredentialLoader.MYSQL_USERNAME],
-            credentials[CredentialLoader.MYSQL_ROOT_PASSWORD],
-            credentials[CredentialLoader.MYSQL_HOST],
-            credentials[CredentialLoader.MYSQL_DB],
-        )
-    conn = DBConnector.openConnection()
+    cursor = None
+    conn = None
+    try:
+        dbConnector = DBConnector()
+        credentialLoader = CredentialLoader()
+        credentials = credentialLoader.loadCredentials()
+        dbConnector.init(
+                credentials[credentialLoader.MYSQL_USERNAME],
+                credentials[credentialLoader.MYSQL_ROOT_PASSWORD],
+                credentials[credentialLoader.MYSQL_HOST],
+                credentials[credentialLoader.MYSQL_DB],
+            )
+        conn = dbConnector.openConnection()
 
-    # create users table
-    query = '''
-    CREATE TABLE `users` (
-        `userId` int NOT NULL AUTO_INCREMENT,
-        `username` varchar(64) NOT NULL,
-        `password` varchar(64) NOT NULL,
-        PRIMARY KEY (`userId`)
-    ) '''
-    cursor = conn.cursor()
-    cursor.execute(query)
+        # wipe db if it exists
+        print("wiping old data")
+        query = '''DROP DATABASE IF EXISTS ''' + credentials[credentialLoader.MYSQL_DB] # no quotes around db name?!?!
+        cursor = conn.cursor(prepared=True)
+        cursor.execute('set profiling = 1')
+        cursor.execute(query)
 
-    # insert test user
-    query = '''
-        INSERT INTO users (username, password) VALUES ("testuser", "testpassword")
-    '''
-    cursor = conn.cursor()
-    cursor.execute(query)
-    conn.commit()
+        # create db
+        print("recreating db")
+        query = '''CREATE DATABASE IF NOT EXISTS ''' + credentials[credentialLoader.MYSQL_DB] # no quotes around db name?!?!
+        cursor = conn.cursor(prepared=True)
+        cursor.execute(query)
 
-    DBConnector.closeConnection(conn)
+        print("selecting db")
+        query = '''USE ''' + credentials[credentialLoader.MYSQL_DB] # no quotes around db name?!?!
+        cursor = conn.cursor()
+        cursor.execute(query)
+
+        # create users table
+        print("creating user table")
+        query = '''
+        CREATE TABLE `users` (
+            `userId` int NOT NULL AUTO_INCREMENT,
+            `username` varchar(64) NOT NULL,
+            `password` varchar(64) NOT NULL,
+            `email` varchar(64) NOT NULL,
+            PRIMARY KEY (`userId`)
+        ) 
+        '''
+        cursor = conn.cursor()
+        cursor.execute(query)
+
+        # insert test user
+        print("inserting test user")
+        query = '''
+            INSERT INTO users (username, password, email) VALUES ("testuser", "testpassword", "test@test.com")
+        '''
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
+    finally:
+        cursor.execute('set profiling = 0')
+        dbConnector.closeConnection(conn)

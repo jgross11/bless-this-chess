@@ -3,15 +3,15 @@ import random
 
 from src.init.CredentialLoader import CredentialLoader
 from src.init.DBConnector import DBConnector
-from src.obj.Utils import Map
+from src.obj.Utils import InformationValidator, Map
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 app = Flask(__name__, static_folder='./src/view/static')
-dbConnector = None
+dbConnector : DBConnector = None
 
 credentials = {}
 
-dbConnection = None
+informationValidator = InformationValidator()
 env = None
 
 users = {"username" : "testusername", "password" : "testpassword"}
@@ -42,6 +42,66 @@ def login():
         map = Map()
         return template.render(map=map)
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    map = Map()
+    if request.method == 'GET':
+        return env.get_template('signup.html').render(map=map)
+    if request.method == 'POST':
+        errorOccurred = False
+        print("submitted signup information")
+        print(request.form)
+
+        ## validate form information
+        username = request.form.get("username")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        if not informationValidator.usernameIsValid(username):
+            print("invalid username provided")
+            map.put(informationValidator.USERNAME_ERROR_KEY, informationValidator.INVALID_USERNAME_VALUE)
+            errorOccurred = True
+        if not informationValidator.passwordIsValid(password):
+            print("invalid password provided")
+            map.put(informationValidator.PASSWORD_ERROR_KEY, informationValidator.INVALID_PASSWORD_VALUE)
+            errorOccurred = True
+        if not informationValidator.emailIsValid(email):
+            print("invalid email provided")
+            map.put(informationValidator.EMAIL_ERROR_KEY, informationValidator.INVALID_EMAIL_VALUE)
+            errorOccurred = True
+        if errorOccurred:
+            print("invalid form data detected - not processing")
+            template = env.get_template('signup.html')
+            return template.render(map=map)
+
+        ## go to db and check if information exists already
+        if dbConnector.usernameTaken(username):
+            print("username already in db")
+            map.put(informationValidator.USERNAME_ERROR_KEY, informationValidator.USERNAME_TAKEN_VALUE)
+            errorOccurred = True
+        if dbConnector.emailTaken(email):
+            print("email already in db")
+            map.put(informationValidator.EMAIL_ERROR_KEY, informationValidator.EMAIL_TAKEN_VALUE)
+            errorOccurred = True
+        if errorOccurred:
+            print("data already exists in db - not processing")
+            template = env.get_template('signup.html')
+            return template.render(map=map)
+
+        # information good - enter into db
+        # TODO salt?
+        if dbConnector.insertNewUser(username, password, email):
+            # TODO session?
+            print("successfully inserted new user in db")
+            return redirect("/")
+        else:
+            print("error when attempting to insert new user in db")
+            map.put("signupError", "Unable to create new user. Please try again.")
+            template = env.get_template('signup.html')
+            return template.render(map=map)
+
+
+
+
 @app.route('/template')
 def render():
     template = env.get_template('test.html')
@@ -66,7 +126,7 @@ def pageNotFound(error):
 if __name__ == '__main__':
     print("loading credentials...")
     credentialLoader = CredentialLoader()
-    credentials = credentialLoader.loadCredentials()
+    credentials = credentialLoader.loadCredentials("config/")
     if credentials == None:
         print("No credentials = no soup for you!")
     else:
