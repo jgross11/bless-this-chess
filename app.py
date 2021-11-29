@@ -9,12 +9,14 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 from bless_this_chess.general.routes import home_bp
 from bless_this_chess.sample.routes import sample_bp
 from bless_this_chess.auth.routes import login_bp, signup_bp
+from bless_this_chess.errors.routes import error_bp
 
 app = Flask(__name__, static_folder='./bless_this_chess/view/static')
 app.register_blueprint(home_bp)
 app.register_blueprint(sample_bp)
 app.register_blueprint(login_bp)
 app.register_blueprint(signup_bp)
+app.register_blueprint(error_bp)
 
 dbConnector : DBConnector = None
 
@@ -132,7 +134,7 @@ def render():
 @app.route('/test')
 def test():  # put application's code here
     return "would you look at that, a new page!"
-
+"""
 @app.errorhandler(404)
 @app.errorhandler(405)
 @app.errorhandler(500)
@@ -141,7 +143,7 @@ def pageNotFound(error):
     map = Map()
     map.put("error", error)
     return template.render(map=map)
-
+"""
 if __name__ == '__main__':
     print("loading credentials...")
     credentialLoader = CredentialLoader()
