@@ -124,3 +124,32 @@ class DBConnector:
             return False
         finally:
             self.closeConnectionAndCursor(conn, cursor)
+
+    def findUserByUsername(self, username):
+        conn = None
+        cursor = None
+        try: 
+            print('finding user with username={}'.format(username))
+            conn = self.openConnection()
+            if(conn != None):
+                cursor = conn.cursor(prepared=True)
+                query = '''SELECT username FROM users WHERE username LIKE %s'''
+                cursor.execute(query,  ( '%' + username + '%',))
+                data = cursor.fetchall()
+                print("obtained user information: {}".format(data))
+                if data == None:
+                    return None
+                result = []
+                for user in data:
+                    result.append(user[0].decode())
+                
+                print(result)
+                return result
+            else:
+                print('error opening connection when querying for user information')
+                return None
+
+        except mysql.connector.Error as error:
+            print("error when querying for user information: {}".format(error))
+        finally:
+            self.closeConnectionAndCursor(conn, cursor)
