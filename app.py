@@ -122,6 +122,29 @@ def signup():
 """
 
 
+@app.route('/search', methods=['GET','POST'])
+def search():
+    if request.method == 'POST':
+        print("submitting username for search")
+        print(request.form)
+        username = request.form.get("username")
+        searchResults = dbConnector.findUserByUsername(username)
+        if searchResults != None:
+            template = env.get_template('search.html')
+            map = Map()
+            map.put("notif",'User(s) exist')
+            map.put("results", searchResults)
+            return template.render(map=map)
+        else:
+            template = env.get_template('search.html')
+            map = Map()
+            map.put("notif",'User does not exist.')
+            return template.render(map=map)
+    else:
+        print("navigating to search page")
+        template = env.get_template('search.html')
+        map = Map()
+        return template.render(map=map)
 
 @app.route('/template')
 def render():
