@@ -6,10 +6,12 @@ from src.init.DBConnector import DBConnector
 from src.obj.Utils import InformationValidator, Map
 from jinja2 import Environment, PackageLoader, select_autoescape
 
+from bless_this_chess.general.routes import home_bp
 from bless_this_chess.sample.routes import sample_bp
 from bless_this_chess.auth.routes import login_bp, signup_bp
 
-app = Flask(__name__, static_folder='./src/view/static')
+app = Flask(__name__, static_folder='bless_this_chess.view.static')
+app.register_blueprint(home_bp)
 app.register_blueprint(sample_bp)
 app.register_blueprint(login_bp)
 app.register_blueprint(signup_bp)
@@ -22,12 +24,12 @@ informationValidator = InformationValidator()
 env = None
 
 users = {"username" : "testusername", "password" : "testpassword"}
-
+"""
 @app.route('/')
 def hello_world():  # put application's code here
     print("navigating to home page")
     return "Look at this! Its a random number: " + str(random.randrange(0, 99999999999))
-
+"""
 @app.route('/resttest')
 def rest_test():
     return jsonify("data obtained from rest call!")
@@ -157,13 +159,15 @@ if __name__ == '__main__':
             credentials[credentialLoader.MYSQL_DB],
         ):
             print("db test connection successful")
+            """
             print("creating Jinja2 environment")
             env = Environment(
-                loader=PackageLoader('src.view', 'templates'),
+                loader=PackageLoader('bless_this_chess.view', 'templates'),
                 autoescape=select_autoescape(['html', 'xml'])
             )
             print("created Jinja2 environment")
             print("starting Flask")
+            """
             app.run()
         else: 
             print("db test connection failed")

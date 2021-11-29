@@ -1,0 +1,45 @@
+* {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body {
+    margin-left:15vw;
+    margin-right:15vw;
+    background-color:#F7E7CE;
+}
+
+div.maincontent{
+    border-style:solid;
+    background-color:white;
+    padding:30px;
+    height:100%;
+    min-height:90vh;
+}
+
+form {
+    width:fit-content;
+    padding:30px;
+    margin:10px;
+    border-style:solid;
+    background-color:white;
+}
+
+.error{
+    color: red
+}
+
+footer {
+    font-size:10pt;
+    margin-top:50px;
+    margin-bottom:20px;
+    text-align:center;
+}
+
+.notif{
+    background-color:#FFF380;
+    border-style:solid;
+    border-width:1px;
+    padding:20px;
+    margin-top: 10px;
+    margin-bottom:10px;
+}
