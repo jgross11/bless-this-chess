@@ -6,7 +6,7 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 from src.obj.Utils import Map
 
 env = Environment(
-                loader=PackageLoader('chess.sample', 'templates'),
+                loader=PackageLoader('bless_this_chess.sample', 'templates'),
                 autoescape=select_autoescape(['html', 'xml'])
             )
 
