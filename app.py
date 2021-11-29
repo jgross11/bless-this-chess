@@ -5,7 +5,7 @@ from src.init.CredentialLoader import CredentialLoader
 from src.init.DBConnector import DBConnector
 from src.obj.Utils import InformationValidator, Map
 from jinja2 import Environment, PackageLoader, select_autoescape
-from appl.sample.routes import sample_bp
+from bless_this_chess.sample.routes import sample_bp
 
 app = Flask(__name__, static_folder='./src/view/static')
 app.register_blueprint(sample_bp)
