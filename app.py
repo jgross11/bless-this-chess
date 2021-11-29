@@ -10,7 +10,7 @@ from bless_this_chess.general.routes import home_bp
 from bless_this_chess.sample.routes import sample_bp
 from bless_this_chess.auth.routes import login_bp, signup_bp
 
-app = Flask(__name__, static_folder='bless_this_chess.view.static')
+app = Flask(__name__, static_folder='./bless_this_chess/view/static')
 app.register_blueprint(home_bp)
 app.register_blueprint(sample_bp)
 app.register_blueprint(login_bp)
