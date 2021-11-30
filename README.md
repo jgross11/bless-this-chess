@@ -1,4 +1,4 @@
-# generic-group-project
+# bless-this-chess
 
 ## Setting up the project
 
