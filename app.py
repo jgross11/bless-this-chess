@@ -6,13 +6,14 @@ from src.init.DBConnector import DBConnector
 from src.obj.Utils import InformationValidator, Map
 from jinja2 import Environment, PackageLoader, select_autoescape
 
-from bless_this_chess.general.routes import home_bp
+from bless_this_chess.general.routes import home_bp, search_bp
 from bless_this_chess.sample.routes import sample_bp
 from bless_this_chess.auth.routes import login_bp, signup_bp
 from bless_this_chess.errors.routes import error_bp
 
 app = Flask(__name__, static_folder='./bless_this_chess/view/static')
 app.register_blueprint(home_bp)
+app.register_blueprint(search_bp)
 app.register_blueprint(sample_bp)
 app.register_blueprint(login_bp)
 app.register_blueprint(signup_bp)
@@ -121,8 +122,31 @@ def signup():
             return template.render(map=map)
 """
 
-
-
+"""
+@app.route('/search', methods=['GET','POST'])
+def search():
+    if request.method == 'POST':
+        print("submitting username for search")
+        print(request.form)
+        username = request.form.get("username")
+        searchResults = dbConnector.findUserByUsername(username)
+        if searchResults != None:
+            template = env.get_template('search.html')
+            map = Map()
+            map.put("notif",'User(s) exist')
+            map.put("results", searchResults)
+            return template.render(map=map)
+        else:
+            template = env.get_template('search.html')
+            map = Map()
+            map.put("notif",'User does not exist.')
+            return template.render(map=map)
+    else:
+        print("navigating to search page")
+        template = env.get_template('search.html')
+        map = Map()
+        return template.render(map=map)
+"""
 @app.route('/template')
 def render():
     template = env.get_template('test.html')
