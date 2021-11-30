@@ -1,4 +1,3 @@
-import random
 from flask import request, redirect, url_for
 from flask.templating import render_template
 from bless_this_chess.DBConnector import DBConnector
@@ -11,7 +10,9 @@ dbConnector = DBConnector()
 @home_bp.route('/')
 def home():
     print("navigating to home page")
-    return "Look at this! Its a random number: " + str(random.randrange(0, 99999999999))
+    map = Map()
+    map.put('testvar', 'test value')
+    return render_template('home.html', map=map)
 
 @home_bp.route('/search', methods=['GET','POST'])
 def search():
