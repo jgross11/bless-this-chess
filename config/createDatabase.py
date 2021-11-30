@@ -1,8 +1,6 @@
 import sys
 sys.path.append("..")
-from src.init.CredentialLoader import CredentialLoader
-from src.init.DBConnector import DBConnector
-
+from bless_this_chess import DBConnector, CredentialLoader
 
 if __name__ == '__main__':
     cursor = None
