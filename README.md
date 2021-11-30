@@ -1,4 +1,4 @@
-# generic-group-project
+# bless-this-chess
 
 ## Setting up the project
 
@@ -14,20 +14,30 @@
 
 ## Running the project
 
-Run app.py in `/` with the command `python \.app.py` - if setup was done correctly, the web server will start listening on port 5000. (`localhost:5000`)
+Run wsgi.py in `/` with the command `python \.wsgi.py` - if setup was done correctly, the web server will start listening on port 5000. (`localhost:5000`)
 
 Stop running the web server by closing terminal or pressing ctrl (command) + c.
 
 ## Project Structure
 
-`config` - contains files that setup the project's environment, typically to be ran once upon initial project setup.
+`config` - contains files that setup the project's environment, typically to be ran once upon initial project setup or to reset environment to clean state.
 
-`src` - source files for the project
+`docs` - technical documentation which may or may not make sense or be applicable to the end product.
 
-`src/init` - used to initialize the web server - DB connectivity, credential reading
+`bless_this_chess` - the meat of the project, where all source files reside. Abbreviated BTC onwards.
 
-`src/obj` - data objects used on the backend
+`BTC/view` - project wide front end resources (CSS, etc.).
 
-`src/view` - front end resources - Jinja templates, CSS
+`BTC/routes` - URL routing components.
 
-`src/controllers` - back end web controllers 
+ex.
+
+`BTC/routes/user` - Contains components necessary to handle user routing requests.
+
+`BTC/routes/user/static` - User routing specific front end resources.
+
+`BTC/routes/user/templates` - User routing specific Jinja templates.
+
+`BTC/routes/user/routes.py` - Backend logic to handle user routing requests.
+
+All `BTC/routes/` subfolders should (probably) be structured similarly. 

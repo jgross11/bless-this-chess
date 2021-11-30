@@ -1,3 +1,6 @@
+from flask.blueprints import Blueprint
+
+
 class Map:
     def __init__(self):
         self.internalMap = {}
@@ -33,3 +36,11 @@ class InformationValidator:
     def emailIsValid(self, email : str):
         # TODO email should be in some standard format
         return email and email.strip()
+
+def create_blueprint(blueprintName : str, relativeRoot : str):
+    blueprint = Blueprint(
+        blueprintName, relativeRoot,
+        template_folder='templates',
+        static_folder='static'
+    )
+    return blueprint
