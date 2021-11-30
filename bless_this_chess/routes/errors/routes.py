@@ -4,9 +4,9 @@ from bless_this_chess.Utils import Map, create_blueprint
 
 error_bp = create_blueprint('error_bp', __name__)
 
-@app.errorhandler(404)
-@app.errorhandler(405)
-@app.errorhandler(500)
+@error_bp.app_errorhandler(404)
+@error_bp.app_errorhandler(405)
+@error_bp.app_errorhandler(500)
 def pageNotFound(error):
     map = Map()
     map.put("error", error)
