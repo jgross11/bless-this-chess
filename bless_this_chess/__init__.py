@@ -1,7 +1,7 @@
 from flask import Flask
-from application.DBConnector import DBConnector
-from application.CredentialLoader import CredentialLoader
-from application.Utils import *
+from bless_this_chess.DBConnector import DBConnector
+from bless_this_chess.CredentialLoader import CredentialLoader
+from bless_this_chess.Utils import *
 
 dbConnector = DBConnector()
 credentials = {}

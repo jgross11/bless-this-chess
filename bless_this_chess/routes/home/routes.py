@@ -1,8 +1,8 @@
 import random
 from flask import request, redirect, url_for
 from flask.templating import render_template
-from application.DBConnector import DBConnector
-from application.Utils import InformationValidator, Map, create_blueprint
+from bless_this_chess.DBConnector import DBConnector
+from bless_this_chess.Utils import InformationValidator, Map, create_blueprint
 
 home_bp = create_blueprint('home_bp', __name__)
 # this will eventually be a subclass that only contains the relevant DB ops

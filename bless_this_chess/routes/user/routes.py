@@ -1,8 +1,8 @@
 
 from flask import request, redirect, url_for, render_template
-from application.DBConnector import DBConnector
-from application.Utils import InformationValidator
-from application.Utils import Map, create_blueprint
+from bless_this_chess.DBConnector import DBConnector
+from bless_this_chess.Utils import InformationValidator
+from bless_this_chess.Utils import Map, create_blueprint
 
 
 user_bp = create_blueprint('user_bp', __name__)
