@@ -12,6 +12,7 @@ def home():
     print("navigating to home page")
     map = Map()
     map.put('testvar', 'test value')
+    map.put('notif', 'This is a notification')
     return render_template('home.html', map=map)
 
 @home_bp.route('/search', methods=['GET','POST'])
