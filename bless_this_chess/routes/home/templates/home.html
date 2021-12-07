@@ -19,18 +19,17 @@
                 <a href="/play">Play</a>
                 <a href="/create">Create</a>
                 <a href="/gallery">Gallery</a>
-
-                <a class="rightnav" style="width:60px"href="/login">Log in</a>
-                <form class="rightnav">
-                    <input type="text" style="width:13vw;" placeholder="Search...">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
+                <a href="/login">Profile</a>
             </nav>
 
             <div class="maincontent">
                 {%if map.containsKey('notif')%}
                 <div class="notif"><span style="font-size:20pt; margin-right:20px;">&#x1F4E2</span>{{map.get('notif')}}</div>
                 {%endif%}
+                <form style="float:right;">
+                    <input type="text" style="width:13vw;" placeholder="Search...">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
                 <h2>Welcome!</h2>
                 <div>
                     {{map.get('testvar')}}

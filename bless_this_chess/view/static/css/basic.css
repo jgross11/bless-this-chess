@@ -21,12 +21,13 @@ nav a {
     border-left: white;
     border-bottom: white;
     margin:0px;
-    padding:10px;
+    padding-top:10px;
+    padding-bottom:10px;
     display: inline-block;
     color: white;
     text-decoration: none;
     text-align:center;
-    width:18%;
+    width:calc(25% - 5px);
 }
 
 nav form {
