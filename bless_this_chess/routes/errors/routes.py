@@ -9,4 +9,4 @@ error_bp = create_blueprint('error_bp', __name__)
 def pageNotFound(error):
     map = Map()
     map.put("error", error)
-    return render_template('error.html', map=map)
+    return render_template('error.jinja2', map=map)
