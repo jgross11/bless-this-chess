@@ -26,11 +26,12 @@
                 {%if map.containsKey('notif')%}
                 <div class="notif"><span style="font-size:20pt; margin-right:20px;">&#x1F4E2</span>{{map.get('notif')}}</div>
                 {%endif%}
-                <form style="float:right;">
-                    <input type="text" style="width:13vw;" placeholder="Search...">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
-                <h2>Welcome!</h2>
+                <h2>Welcome!
+                    <form style="float:right;">
+                        <input type="text" style="width:13vw;" placeholder="Search...">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </h2>
                 <div>
                     {{map.get('testvar')}}
                     <p>Lorem ipsum dolor sit amet, per repudiandae complectitur consequuntur ad, 
@@ -69,7 +70,5 @@
             </div>
         </div>
     </body>
-    <footer>
-        Made with &#x2764 by Josh, Bella, Robby & Jack
-    </footer>
+    {% include 'footer.html' ignore missing %}
 </html>
