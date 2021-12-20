@@ -23,7 +23,7 @@ def login():
             return redirect(url_for('home_bp.home')) 
         else:
             map = Map()
-            map.put("notif",'Incorrect username or password. Please try again.')
+            map.put("invalidauth",'Incorrect username or password. Please try again.')
             return render_template('login.jinja2', map=map)
     else:
         print("navigating to login page")

@@ -1,65 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-    <meta charset="UTF-8">
-    <head>
-        <title>Welcome to chess!</title>
-        <link rel="stylesheet" href="static/css/basic.css">
-    </head>
-    <body>
-        
-    </body>
-</html>
+{% extends 'layout.jinja2' %}
 
-<!DOCTYPE html>
-<html lang="en">
-    <meta charset="UTF-8">
-    <head>
-        <title>Bless this Chess</title>
-        <link rel="stylesheet" href="static/css/basic.css">
-        <!-- fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200&family=Poiret+One&display=swap" rel="stylesheet"> 
-        <!-- fa fa search icon -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
-    <body>
-        <h1><a href="/">&#x265F Bless this Chess &#x265F</a></h1>
-
-        <div class="page">
-            <nav>
-                <a href="/play">Play</a>
-                <a href="/create">Create</a>
-                <a href="/gallery">Gallery</a>
-
-                <a class="rightnav" style="width:60px"href="/login">Log in</a>
-                <form class="rightnav">
-                    <input type="text" style="width:13vw;" placeholder="Search...">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
-            </nav>
-
-            <div class="maincontent">
-                <div style="max-width:530px;width:100%;margin:auto;margin-top:40px;padding-bottom:60px">
-                    <form action="/login" method="post">
-                        <h1>Login</h1><hr>
-                        {%if map.containsKey('notif')%}
-                        <div class="notif">{{map.get('notif')}}</div>
-                        {%endif%}
-                        Username: <br>
-                        <input name="username" type="text"/><br>
-                        Password: <br>
-                        <input name="password" type="password"/><br>
-                        <button>Log in</button>
-                    </form>
-                    <br>
-                    New member? Sign up <a href="/signup">here</a>
-                </div>
-            </div>
-
-        </div>
-    </body>
-    <footer>
-        Made with &#x2764 by Josh, Bella, Robby & Jack
-    </footer>
-</html>
+{% block content %}
+    <div style="max-width:530px;width:100%;margin:auto;margin-top:40px;padding-bottom:60px">
+        <form action="/login" method="post">
+            <h1>Login</h1><hr>
+            {%if map.containsKey('invalidauth')%}
+                <div class="notif">{{map.get('invalidauth')}}</div>
+            {%endif%}
+            Username: <br>
+            <input name="username" type="text"/><br>
+            Password: <br>
+            <input name="password" type="password"/><br>
+            <button>Log in</button>
+        </form>
+        <br>
+        New member? Sign up <a href="/signup">here</a>
+    </div>
+{% endblock %}
