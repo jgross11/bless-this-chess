@@ -13,7 +13,7 @@ def home():
     map = Map()
     map.put('testvar', 'test value')
     map.put('notif', 'This is a notification')
-    return render_template('home.html', map=map)
+    return render_template('home.jinja2', map=map)
 
 @home_bp.route('/search', methods=['GET','POST'])
 def search():
@@ -26,11 +26,11 @@ def search():
             map = Map()
             map.put("notif",'User(s) exist')
             map.put("results", searchResults)
-            return render_template('search.html', map=map)
+            return render_template('search.jinja2', map=map)
         else:
             map = Map()
             map.put("notif",'User does not exist.')
-            return render_template('search.html', map=map)
+            return render_template('search.jinja2', map=map)
     else:
         print("navigating to search page")
-        return render_template('search.html', map=Map())
+        return render_template('search.jinja2', map=Map())

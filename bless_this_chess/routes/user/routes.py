@@ -23,17 +23,17 @@ def login():
             return redirect(url_for('home_bp.home')) 
         else:
             map = Map()
-            map.put("notif",'Incorrect username or password. Please try again.')
-            return render_template('login.html', map=map)
+            map.put("invalidauth",'Incorrect username or password. Please try again.')
+            return render_template('login.jinja2', map=map)
     else:
         print("navigating to login page")
-        return render_template('login.html', map=Map())
+        return render_template('login.jinja2', map=Map())
 
 @user_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     map = Map()
     if request.method == 'GET':
-        return render_template('signup.html', map=map)
+        return render_template('signup.jinja2', map=map)
     if request.method == 'POST':
         errorOccurred = False
         print("submitted signup information")
@@ -57,7 +57,7 @@ def signup():
             errorOccurred = True
         if errorOccurred:
             print("invalid form data detected - not processing")
-            return render_template('signup.html', map=map)
+            return render_template('signup.jinja2', map=map)
 
         ## go to db and check if information exists already
         if dbConnector.usernameTaken(username):
@@ -70,7 +70,7 @@ def signup():
             errorOccurred = True
         if errorOccurred:
             print("data already exists in db - not processing")
-            return render_template('signup.html', map=map)
+            return render_template('signup.jinja2', map=map)
 
         # information good - enter into db
         # TODO salt?
@@ -81,4 +81,4 @@ def signup():
         else:
             print("error when attempting to insert new user in db")
             map.put("signupError", "Unable to create new user. Please try again.")
-            return render_template('signup.html', map=map)
+            return render_template('signup.jinja2', map=map)
