@@ -1,5 +1,4 @@
-
-from flask import request, redirect, url_for, render_template
+from flask import request, session, redirect, url_for, render_template
 from bless_this_chess.DBConnector import DBConnector
 from bless_this_chess.Utils import InformationValidator
 from bless_this_chess.Utils import Map, create_blueprint
@@ -20,6 +19,7 @@ def login():
         password = request.form.get("password")
         loginData = dbConnector.findUserByUsernamePassword(username, password)
         if loginData != None:
+            session['userlogged'] = username
             return redirect(url_for('home_bp.home')) 
         else:
             map = Map()
@@ -28,6 +28,11 @@ def login():
     else:
         print("navigating to login page")
         return render_template('login.jinja2', map=Map())
+
+@user_bp.route('/logout', methods=['POST'])
+def logout():
+    session.pop('userlogged', None)
+    return redirect(url_for('user_bp.login'))
 
 @user_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -75,8 +80,8 @@ def signup():
         # information good - enter into db
         # TODO salt?
         if dbConnector.insertNewUser(username, password, email):
-            # TODO session?
             print("successfully inserted new user in db")
+            session['userlogged'] = username
             return redirect(url_for('home_bp.home'))
         else:
             print("error when attempting to insert new user in db")
