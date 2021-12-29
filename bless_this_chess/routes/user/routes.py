@@ -31,7 +31,7 @@ def login():
 
 @user_bp.route('/logout', methods=['POST'])
 def logout():
-    session.pop('userlogged', None)
+    session.clear()
     return redirect(url_for('user_bp.login'))
 
 @user_bp.route('/signup', methods=['GET', 'POST'])
