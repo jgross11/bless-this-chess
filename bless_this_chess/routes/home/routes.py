@@ -13,10 +13,6 @@ def home():
     map = Map()
     map.put('testvar', 'test value')
     map.put('notif', 'This is a notification')
-    # if user is logged in
-    userlogged = session.get('userlogged')
-    if userlogged:
-        map.put('userlogged', str(userlogged))
     return render_template('home.jinja2', map=map)
 
 @home_bp.route('/search', methods=['GET','POST'])

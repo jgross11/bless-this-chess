@@ -10,8 +10,4 @@ error_bp = create_blueprint('error_bp', __name__)
 def pageNotFound(error):
     map = Map()
     map.put("error", error)
-    # if user is logged in
-    userlogged = session.get('userlogged')
-    if userlogged:
-        map.put('userlogged', str(userlogged))
     return render_template('error.jinja2', map=map)

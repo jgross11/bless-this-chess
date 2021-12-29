@@ -13,9 +13,9 @@
         
     </head>
     <body>
-        {%if map.containsKey('userlogged')%}
+        {%if session['userlogged']%}
             <div style='float:right;text-align:right'>Signed in as 
-            <span style='font-weight:bold'>{{map.get('userlogged')}}</span>
+            <span style='font-weight:bold'>{{session['userlogged']}}</span>
             <br><form action="logout" method="post">
             <button type="submit" class="btn-link">Log out</button>
             </form></div>
