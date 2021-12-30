@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_session import Session
 from bless_this_chess.DBConnector import DBConnector
 from bless_this_chess.CredentialLoader import CredentialLoader
 from bless_this_chess.Utils import *
@@ -7,6 +8,7 @@ dbConnector = DBConnector()
 credentials = {}
 credentialLoader = CredentialLoader()
 informationValidator = InformationValidator()
+session = Session()
 
 def init_app():
     print("loading credentials")
@@ -25,6 +27,11 @@ def init_app():
             credentials[credentialLoader.MYSQL_DB],
         ):
             print("db test connection successful")
+            app.secret_key = credentialLoader.SECRET_KEY
+            # there should be a way to set the session type in .env w/o hardcoding as below
+            #app.config['SESSION_TYPE'] = credentialLoader.SESSION_TYPE
+            app.config['SESSION_TYPE'] = 'filesystem'
+            session.init_app(app)
             print("creating app context")
             # TODO there should be a nicer way to do this part...
             with app.app_context():
