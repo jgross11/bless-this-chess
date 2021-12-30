@@ -1,3 +1,4 @@
+from flask import session
 from flask.templating import render_template
 from bless_this_chess.Utils import Map, create_blueprint
 
