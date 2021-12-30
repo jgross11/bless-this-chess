@@ -87,3 +87,9 @@ def signup():
             print("error when attempting to insert new user in db")
             map.put("signupError", "Unable to create new user. Please try again.")
             return render_template('signup.jinja2', map=map)
+
+@user_bp.route('/profile')
+def profile():
+    map = Map()
+    #map.put('notif', 'This is a notification')
+    return render_template('profile.jinja2', map=map)
