@@ -1,5 +1,5 @@
 from flask.blueprints import Blueprint
-
+import re
 
 class Map:
     def __init__(self):
@@ -27,15 +27,17 @@ class InformationValidator:
         pass
     
     def usernameIsValid(self, username : str):
-        return username and username.strip()
+        return username and username.strip() and len(username) > 0 and len(username) < 65
     
     def passwordIsValid(self, pwd : str):
         # TODO password should be encrypted to standard format
         return pwd and pwd.strip()
 
     def emailIsValid(self, email : str):
-        # TODO email should be in some standard format
-        return email and email.strip()
+        # (.+) -> at least one character
+        # regex 'reads': at least one character, an @, at least one character, a ., at least one character
+        # not perfect, but good enough for our purposes
+        return email and email.strip() and len(email) > 5 and len(email) < 65 and re.match("(.+)@(.+)[.](.+)", email)
 
 def create_blueprint(blueprintName : str, relativeRoot : str):
     blueprint = Blueprint(
