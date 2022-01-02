@@ -28,8 +28,6 @@ def init_app():
         ):
             print("db test connection successful")
             app.secret_key = credentialLoader.SECRET_KEY
-            # there should be a way to set the session type in .env w/o hardcoding as below
-            #app.config['SESSION_TYPE'] = credentialLoader.SESSION_TYPE
             app.config['SESSION_TYPE'] = credentials[credentialLoader.SESSION_TYPE]
             session.init_app(app)
             print("creating app context")
