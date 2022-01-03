@@ -10,9 +10,9 @@ const validatePassword = (password) => {
     for(let i = 0; i < password.length; i++){
         let char = password[i];
         // why do all these checks feel hacky..
-        if(!hasLower && char === char.toLowerCase()) hasLower = true;
-        if(!hasUpper && char === char.toUpperCase()) hasUpper = true;
         if(!hasNumber && char >= '0' && char <= '9') hasNumber = true;
+        else if(!hasLower && char === char.toLowerCase()) hasLower = true;
+        else if(!hasUpper && char === char.toUpperCase()) hasUpper = true;
         if(hasLower && hasUpper && hasNumber) return true;
     }
     return false;
