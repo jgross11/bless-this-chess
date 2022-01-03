@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <head>
+        <title>Bless this Chess</title>
+        <link rel="stylesheet" href="/static/css/basic.css">
+        <!-- fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200&family=Poiret+One&display=swap" rel="stylesheet"> 
+        <!-- fa icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        {%if session['userlogged']%}
+            <div style='float:right;text-align:right;'>Signed in as 
+                <div class='dropdown'>
+                    <button style='font-weight:bold' class='dropbtn' onclick=dropdown()>
+                        {{session['userlogged']}}
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div id='dropdown-content' class='dropdown-content'>
+                        <div style='height:4px'></div>
+                        <div><a href='/profile'>My Profile</a></div>
+                        <div><a href='/settings'>Settings</a></div>
+                        <div style='height:4px;border-bottom:solid;border-width:1px;'></div>
+                        <div style='height:4px;'></div>
+                        <div><a>
+                            <form action="logout" method="post">
+                            <button type="submit" class="btn-link" style='font-weight:bold;text-align:right'>Log out</button>
+                            </form>
+                        </a></div>
+                        <div style='height:4px'></div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function dropdown() {
+                    document.getElementById('dropdown-content').classList.toggle('show');
+                }
+                window.onclick = function(event){
+                    if (!event.target.matches('.dropbtn')) {
+                        var dropdowns = document.getElementsByClassName("dropdown-content");
+                        var i;
+                        for (i = 0; i < dropdowns.length; i++) {
+                            var openDropdown = dropdowns[i];
+                            if (openDropdown.classList.contains('show')) {
+                                openDropdown.classList.remove('show');
+                            }
+                        }
+                    }
+                }
+            </script>
+        {%endif%}
+        <h1><a href="/">&#x265F Bless this Chess &#x265F</a></h1>
+        <div class="page">
+            <nav>
+                <a href="/play">Play</a>
+                <a href="/create">Create</a>
+                <a href="/gallery">Gallery</a>
+                <a href="/profile">Profile</a>
+            </nav>
+            <div class="maincontent">
+                {%if map.containsKey('notif')%}
+                    <div class="notif"><span style="font-size:20pt; margin-right:20px;">&#x1F4E2</span>{{map.get('notif')}}</div>
+                {%endif%}
+                <h2>{% block title %}{% endblock %}
+                    {% block searchbar %}{% endblock %}
+                </h2>
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </body>
+    <footer>
+        Made with &#x2764 by Josh, Bella, Robby & Jack<br>
+        See the GitHub <a href="https://github.com/jgross11/bless-this-chess" target="blank">repository</a>
+    </footer>
+</html>

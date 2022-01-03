@@ -1,0 +1,30 @@
+{% extends 'layout.jinja2' %}
+
+{% block content %}
+    <div style="max-width:530px;width:100%;margin:auto;margin-top:40px;padding-bottom:60px">
+        <form action="/signup" method="post">
+            <h1>Sign Up</h1><hr>
+            Username: <br>
+            <input name="username" type="text"/><br>
+            {%if map.containsKey('usernameError')%}
+                <div class="error">{{map.get('usernameError')}}</div>
+            {%endif%}
+            Password: <br>
+            <input name="password" type="password"/><br>
+            {%if map.containsKey('passwordError')%}
+                <div class="error">{{map.get('passwordError')}}</div>
+            {%endif%}
+            Email: <br>
+            <input name="email" type="text"/><br>
+            {%if map.containsKey('emailError')%}
+                <div class="error">{{map.get('emailError')}}</div>
+            {%endif%}
+            {%if map.containsKey('signupError')%}
+                <div class="error">{{map.get('signupError')}}</div>
+            {%endif%}
+            <button>Sign up</button>
+        </form>
+        <br>
+        Existing member? Log in <a href="/login">here</a>
+    </div>
+{% endblock %}

@@ -1,36 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-    <meta charset="UTF-8">
-    <head>
-        <title>Chess Website</title>
-        <link rel="stylesheet" href="css/basic.css">
-    </head>
-    <div>
-        <h1>Chess Website</h1>
-        <nav>
-            <a href="styletesting.html">Link1</a>
-            <a href="styletesting.html">Link2</a>
-            <a href="styletesting.html">Link3</a>
-        </nav><br>
-    </div>
-    
-    <body>
-        <div class="maincontent">
-            <div class="notif">this is a notification</div>
-            <h2>Welcome</h2>
+{% extends 'layout.jinja2' %}
+
+{% block content %}
+    <div style='display:flex'>
+        <div style='display:inline-block;width:25%;padding-right:20px'>
+            <img src="/static/media/chessboard.png" title='this is a profile photo' style="width:100%">
+            <p>User's bio, badges & other info goes here</p>
+        </div> 
+        <div style='display:inline-block;width:75%;padding-left:20px'>
+            <h2 style='font-size:20pt;margin:0px'>testusername</h2>
+            <div>Ranking goes here</div>
+            <div style='display:flex;margin-top:20px'>
+                <a class='subnav' href="/profile">Featured Page</a>
+                <a class='subnav' href="/profile">Custom Pieces</a>
+                <a class='subnav' href="/profile">Friends</a>
+            </div>
+            <hr style='margin:0px'>
             <div>
                 <p>Lorem ipsum dolor sit amet, per repudiandae complectitur consequuntur ad, 
                 ei qui phaedrum conceptam. Sea ei philosophia definitiones, an his graece 
                 regione. An atomorum iudicabit vim, has volutpat forensibus ex, autem integre 
                 honestatis sit ex. Eum suas malis explicari at, pri in errem similique. Mea 
                 impetus comprehensam in, error fastidii ad sed.</p>
-
-                <form style="float:right">
-                    Do you like chess: <br>
-                    <input type="text"/><br>
-                    <button>Submit</button>
-                    <div class="notif">this is a notification</div>
-                </form>
                 
                 <p>Tale clita eos ei, his verear accusata at, animal labitur id eos. Et mei posse 
                 alienum, altera iracundia ullamcorper at pro. Sed natum epicuri argumentum et, 
@@ -57,8 +47,5 @@
                 vocibus facilis mei at, quem duis saperet his in. Dicat veritus convenire an usu.</p>
             </div>
         </div>
-    </body>
-    <footer>
-        this is a footer bla bla 
-    </footer>
-</html>
+    </div>
+{% endblock %}

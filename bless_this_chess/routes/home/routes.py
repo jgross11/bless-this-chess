@@ -1,4 +1,4 @@
-from flask import request, redirect, url_for
+from flask import request, session, redirect, url_for
 from flask.templating import render_template
 from bless_this_chess.DBConnector import DBConnector
 from bless_this_chess.Utils import Map, create_blueprint
@@ -13,7 +13,7 @@ def home():
     map = Map()
     map.put('testvar', 'test value')
     map.put('notif', 'This is a notification')
-    return render_template('home.html', map=map)
+    return render_template('home.jinja2', map=map)
 
 @home_bp.route('/search', methods=['GET','POST'])
 def search():
@@ -26,11 +26,11 @@ def search():
             map = Map()
             map.put("notif",'User(s) exist')
             map.put("results", searchResults)
-            return render_template('search.html', map=map)
+            return render_template('search.jinja2', map=map)
         else:
             map = Map()
             map.put("notif",'User does not exist.')
-            return render_template('search.html', map=map)
+            return render_template('search.jinja2', map=map)
     else:
         print("navigating to search page")
-        return render_template('search.html', map=Map())
+        return render_template('search.jinja2', map=Map())

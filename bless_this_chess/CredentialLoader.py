@@ -6,6 +6,8 @@ class CredentialLoader:
     MYSQL_HOST = "MYSQL_HOST"
     MYSQL_USERNAME = "MYSQL_USERNAME"
     MYSQL_DB = "MYSQL_DB"
+    SECRET_KEY = "SECRET_KEY"
+    SESSION_TYPE = "SESSION_TYPE"
 
     def loadCredentials(self, path = "./"):
         ENV_PATH = path
