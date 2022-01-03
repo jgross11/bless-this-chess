@@ -1,19 +1,34 @@
 {% extends 'layout.jinja2' %}
 
 {% block content %}
+    <script src="static/js/informationValidator.js"></script>
     <div style="max-width:530px;width:100%;margin:auto;margin-top:40px;padding-bottom:60px">
-        <form action="/login" method="post">
+        <form id="loginform" action="/login" method="post">
             <h1>Login</h1><hr>
             {%if map.containsKey('invalidauth')%}
                 <div class="notif">{{map.get('invalidauth')}}</div>
             {%endif%}
             Username: <br>
-            <input name="username" type="text"/><br>
+            <input id="username" name="username" type="text"/><br>
             Password: <br>
-            <input name="password" type="password"/><br>
-            <button>Log in</button>
+            <input id="password" name="password" type="password"/><br>
         </form>
+        <button onClick="verifyLogin()">Log in</button>
         <br>
         New member? Sign up <a href="/signup">here</a>
     </div>
+    <script>
+        let usernameDiv = document.getElementById('username');
+        let passwordDiv = document.getElementById('password');
+        let form = document.getElementById('loginform');
+        const verifyLogin = () => {
+            let usernameGood = false;
+            let passwordGood = false;
+            if(validateUsername(usernameDiv.value)) usernameGood = true;
+            if(validatePassword(passwordDiv.value)) passwordGood = true;
+            if(!usernameGood) document.write("invalid username");
+            if(!passwordGood) document.write("invalid password");
+            if(usernameGood && passwordGood) form.submit();
+        }
+    </script>
 {% endblock %}
