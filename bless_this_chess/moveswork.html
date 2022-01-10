@@ -1,0 +1,95 @@
+<html>
+    <body>
+        <div id="container">
+            <div id="preview">
+            </div>
+            <div id="movelist">
+                <div id="basemoves">
+                <button onclick="createBaseMove()">New Move</button>
+                <table id="basemovetable">
+                    <tr>
+                        <th>Move</th>
+                        <th>Preview?</th>
+                        <th>Delete Move</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                    </tr>
+                </table>
+                </div>
+                <div id="conditionalmoves">
+                </div>
+                <button onclick="submit()">Submit moves</button>
+            </div>
+        </div>
+    </body>
+    
+    <script>
+        let baseMoveTableDiv = document.getElementById('basemovetable');
+        let movePresets = [
+            "up any",
+            "up 1",
+            "down 1",
+            "down any",
+            "left 1",
+            "right 1",
+            "left any",
+            "right any"
+        ];
+
+        let directions={
+            "up": 1,
+            "down": 2,
+            "left": 3,
+            "right": 4
+        }
+        
+        const createBaseMove = () => {
+            let baseMoveTemplate = 
+            `
+                <tr>
+                    <td>
+                        <input type="text" oninput='console.log(this.value)' value='${movePresets[Math.floor(Math.random() * movePresets.length)]}'></input>
+                    </td>
+                    <td>
+                        <input type="checkbox" checked></input>
+                    </td>
+                    <td>
+                        <button onclick='this.parentElement.parentElement.remove()'>-</button>
+                    </td>
+                </tr>
+            `
+            baseMoveTableDiv.innerHTML += baseMoveTemplate;
+        }
+
+        const submit = () => {
+            let moves = [];
+            baseMoveTableDiv.childNodes.forEach(body => {
+                body.childNodes.forEach(row => {
+                    row.childNodes.forEach(cell => {
+                        let text = cell.innerHTML;
+                        console.log(text);
+                        if(text && text.includes('text')){
+                            let regex = /<input type="text" value="(.*)">/;
+                            let group = text.match(regex);
+                            // console.log(group);
+                            let value = group[1];
+                            // console.log(value);
+                            if(validMove(value)) parseMove();
+                        }
+                    })
+                })
+            });
+        }
+
+        const validMove = (move) => {
+            let single = /(up|left|right|down)[\s]+([0-9]+|any)/
+            // works on pythex but not in js?
+            // DOM fuckery doesn't update inner html - manip data model like someone who knows what they're doing
+            let compound = /(up|left|right|down)[\s]+([0-9]+|any)[\s]+(and|AND|And)[\s]+(up|left|right|down)[\s]+([0-9]+|any)/
+            let matches = move.match(compound);
+            if(matches) return true;
+            return move.match(single) !== undefined;
+        } 
+    </script>
+</html>
