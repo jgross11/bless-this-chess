@@ -15,6 +15,11 @@ def home():
     map.put('notif', 'This is a notification')
     return render_template('home.jinja2', map=map)
 
+@home_bp.route('/graphics', methods=['GET'])
+def graphics():
+    print("navigating to graphics test")
+    return render_template('graphicstest.jinja2', map=Map())
+
 @home_bp.route('/search', methods=['GET','POST'])
 def search():
     if request.method == 'POST':
