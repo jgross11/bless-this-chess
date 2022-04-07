@@ -11,6 +11,11 @@
     let NUM_TILES_TALL = 8;
     let BOARD_TILE_WIDTH_SIZE = BOARD_WIDTH/NUM_TILES_WIDE;
     let BOARD_TILE_HEIGHT_SIZE = BOARD_HEIGHT/NUM_TILES_TALL;
+    let king;
+
+    function preload(){
+        king = loadImage('static/media/chess_sprites/black_king.png');
+    }
 
     function setup(){
         let canvas = createCanvas(BOARD_WIDTH,BOARD_WIDTH);
@@ -22,11 +27,16 @@
     function draw(){
         drawBackground();
         drawTiles();
+        drawPieces();
         handleInput();
     }
 
     function handleInput(){
+        if(mouseIsPressed) square(mouseX-12, mouseY-12, 25);
+    }
 
+    function drawPieces(){
+        image(king, 0, 0,BOARD_TILE_WIDTH_SIZE,BOARD_TILE_WIDTH_SIZE);
     }
 
     function drawBackground(){
