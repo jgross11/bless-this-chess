@@ -1,0 +1,47 @@
+{% extends 'layout.jinja2' %}
+{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.js"></script>
+<div id="container"></div>
+<script>
+    let BOARD_WIDTH = 800;
+    let BOARD_HEIGHT = 800;
+    let WHITE_COLOR;
+    let BLACK_COLOR;
+    let NUM_TILES_WIDE = 8;
+    let NUM_TILES_TALL = 8;
+    let BOARD_TILE_WIDTH_SIZE = BOARD_WIDTH/NUM_TILES_WIDE;
+    let BOARD_TILE_HEIGHT_SIZE = BOARD_HEIGHT/NUM_TILES_TALL;
+
+    function setup(){
+        let canvas = createCanvas(BOARD_WIDTH,BOARD_WIDTH);
+        canvas.parent('container');
+        WHITE_COLOR = color(255,255,255);
+        BLACK_COLOR = color(0,0,0);
+    }
+
+    function draw(){
+        drawBackground();
+        drawTiles();
+        handleInput();
+    }
+
+    function handleInput(){
+
+    }
+
+    function drawBackground(){
+        fill(WHITE_COLOR);
+        stroke(BLACK_COLOR);
+        strokeWeight(4);
+        rect(0,0,BOARD_WIDTH,BOARD_HEIGHT);
+    }
+
+    function drawTiles(){
+        fill(BLACK_COLOR);
+        noStroke();
+        for(let y = 0; y < NUM_TILES_TALL; y++)
+            for(let x = 0; x < NUM_TILES_WIDE; x++)
+                if((x+y)%2==0) square(x*BOARD_TILE_WIDTH_SIZE, y*BOARD_TILE_HEIGHT_SIZE, BOARD_TILE_WIDTH_SIZE);
+    }
+</script>
+{% endblock %}
