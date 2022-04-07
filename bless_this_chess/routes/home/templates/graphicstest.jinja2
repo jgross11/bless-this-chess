@@ -32,11 +32,12 @@
     }
 
     function handleInput(){
-        if(mouseIsPressed) square(mouseX-12, mouseY-12, 25);
+        if(mouseIsPressed) image(king, mouseX-(BOARD_TILE_WIDTH_SIZE/2), mouseY-(BOARD_TILE_WIDTH_SIZE/2),BOARD_TILE_WIDTH_SIZE,BOARD_TILE_WIDTH_SIZE);
+        else image(king, 0, 0,BOARD_TILE_WIDTH_SIZE,BOARD_TILE_WIDTH_SIZE);
     }
 
     function drawPieces(){
-        image(king, 0, 0,BOARD_TILE_WIDTH_SIZE,BOARD_TILE_WIDTH_SIZE);
+        
     }
 
     function drawBackground(){
