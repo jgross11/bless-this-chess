@@ -5,18 +5,41 @@
 <script src="static/js/ViewUtils.js"></script>
 <div id="container"></div>
 <script>
+    // pixel width
     let BOARD_WIDTH = 800;
+    
+    // pixel height
     let BOARD_HEIGHT = 800;
+
+    // ##### 'constants' loaded from game object #####
+    
+    // tile colors
     let PRIMARY_TILE_COLOR,SECONDARY_TILE_COLOR;
+    
+    // board dimensions
     let NUM_TILES_WIDE,NUM_TILES_TALL;
+    
+    // tile pixel measurements
     let BOARD_TILE_WIDTH_SIZE,BOARD_TILE_HEIGHT_SIZE;
-    let king;
+    
+    // array of p5 images representing pieces
+    // index here is index in game object board representation
+    // i.e. -index is black, +index is white
     let sprites = [];
+
+    // ##### end constants loaded from game object #####
+
+    // fixed colors
     let WHITE_COLOR,BLACK_COLOR,HOVER_COLOR;
+
+    // tile coordinates when mouse is pressed
     let selectedCoords = {x: -1, y: -1};
 
+    // template object representing what may be sent from the backend
     let game = Game();
 
+    // p5 function called upon initial canvas creation
+    // set / calculate game specific constants and load images
     function preload(){
         NUM_TILES_TALL = game.dimensions.height;
         NUM_TILES_WIDE = game.dimensions.width;
@@ -29,9 +52,10 @@
         }
         PRIMARY_TILE_COLOR = color(game.primaryTileColor);
         SECONDARY_TILE_COLOR = color(game.secondaryTileColor);
-        // king = loadImage('static/media/chess_sprites/black_king.png');
     }
 
+    // initial p5 function called to create canvas
+    // create canvas and board-agnostic colors
     function setup(){
         let canvas = createCanvas(BOARD_WIDTH,BOARD_WIDTH);
         canvas.parent('container');
@@ -40,22 +64,26 @@
         HOVER_COLOR = color("yellow");
     }
 
+    // core p5 draw function
+    // all draw functions should be called from here
     function draw(){
-        drawBackground();
         drawTiles();
+        drawFrame();
         drawPieces();
         handleInput();
     }
 
-    function handleInput(){
+    function handleInput(){}
 
-    }
-
+    // p5 function for when mouse is pressed down
+    // set selected coords to the coords of the tile the mouse is over
     function mousePressed(){
         selectedCoords.x = mouseXToTile();
         selectedCoords.y = mouseYToTile();
     }
 
+    // p5 function for when mouse is released
+    // wipe selected coords and handle piece movement (sloppily) if necessary
     function mouseReleased(){
         if(selectedCoords.x != -1 && selectedCoords.y != -1){
             // if(game.moveIsValid(selectedCoords.x, selectedCoords.y, mouseXToTile(). mouseYToTile())){}
@@ -66,6 +94,9 @@
         }
     }
 
+    // iterates through game object board representation
+    // and draws piece sprites on board
+    // or at mouse cursor if the piece is selected
     function drawPieces(){
         for(let y in game.board)
             for(let x in game.board[y]){
@@ -78,13 +109,17 @@
             }
     }
 
-    function drawBackground(){
-        fill(WHITE_COLOR);
+    // draw border around canvas
+    function drawFrame(){
+        noFill();
         stroke(BLACK_COLOR);
-        strokeWeight(4);
+        strokeWeight(12);
         rect(0,0,BOARD_WIDTH,BOARD_HEIGHT);
     }
 
+    // given tile x, y coordinates
+    // determines if mouse is hovering over a piece
+    // returns true if the mouse is hovering over a tile that contains a piece, false otherwise
     function mouseIsOverPiece(x, y){
         return mouseX && mouseY && // mouse is within canvas, canvas has focus
         mouseXToTile()==x && mouseYToTile()==y && // mouse is within this specific tile
@@ -92,14 +127,19 @@
         // && game.playerTurn = playerTurn // its this player's turn (premoves make this silly)
     }
 
+    // converts mouse x pixel position to x tile coordinate
     function mouseXToTile(){
         return intdiv(mouseX,BOARD_TILE_WIDTH_SIZE);
     }
 
+    // converts mouse y pixel position to y tile coordinate
     function mouseYToTile(){
         return intdiv(mouseY,BOARD_TILE_HEIGHT_SIZE);
     }
 
+    // draw board tiles
+    // assumes rectangular board
+    // handles coloring of tile when mouse is hovering over a piece
     function drawTiles(){
         noStroke();
         for(let y = 0; y < NUM_TILES_TALL; y++)
