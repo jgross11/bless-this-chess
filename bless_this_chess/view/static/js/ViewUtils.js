@@ -1,0 +1,1 @@
+intdiv = (a,b) => (a-a%b)/b;
