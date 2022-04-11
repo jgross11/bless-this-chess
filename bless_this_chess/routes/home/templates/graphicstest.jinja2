@@ -85,13 +85,20 @@
     // p5 function for when mouse is released
     // wipe selected coords and handle piece movement (sloppily) if necessary
     function mouseReleased(){
-        if(selectedCoords.x != -1 && selectedCoords.y != -1){
-            // if(game.moveIsValid(selectedCoords.x, selectedCoords.y, mouseXToTile(). mouseYToTile())){}
-            game.board[mouseYToTile()][mouseXToTile()] = game.board[selectedCoords.y][selectedCoords.x];
-            game.board[selectedCoords.y][selectedCoords.x] = 0;
-            selectedCoords.x = -1;
-            selectedCoords.y = -1;
+        let tileX, tileY;
+        tileX = mouseXToTile();
+        tileY = mouseYToTile();
+        if(selectedCoords.x != -1 && selectedCoords.y != -1 && tileX >= 0 && tileY >= 0 && tileX < game.dimensions.width && tileY < game.dimensions.height){
+            // premoving
+            // if(game.playerTurn !== playerTurn){}
+            
+            if(tileX !== selectedCoords.x || tileY !== selectedCoords.y /*&& game.moveIsValid(selectedCoords.x, selectedCoords.y, tileX, tileY)*/){
+                game.board[tileY][tileX] = game.board[selectedCoords.y][selectedCoords.x];
+                game.board[selectedCoords.y][selectedCoords.x] = 0;
+            }
         }
+        selectedCoords.x = -1;
+        selectedCoords.y = -1;
     }
 
     // iterates through game object board representation
@@ -129,12 +136,12 @@
 
     // converts mouse x pixel position to x tile coordinate
     function mouseXToTile(){
-        return intdiv(mouseX,BOARD_TILE_WIDTH_SIZE);
+        return mouseX < 0 ? -1 : intdiv(mouseX,BOARD_TILE_WIDTH_SIZE);
     }
 
     // converts mouse y pixel position to y tile coordinate
     function mouseYToTile(){
-        return intdiv(mouseY,BOARD_TILE_HEIGHT_SIZE);
+        return mouseY < 0 ? -1 : intdiv(mouseY,BOARD_TILE_HEIGHT_SIZE);
     }
 
     // draw board tiles
