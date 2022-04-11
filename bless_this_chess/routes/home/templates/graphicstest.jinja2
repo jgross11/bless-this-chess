@@ -1,0 +1,161 @@
+{% extends 'layout.jinja2' %}
+{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.js"></script>
+<script src="static/js/Game.js"></script>
+<script src="static/js/ViewUtils.js"></script>
+<div id="container"></div>
+<script>
+    // pixel width
+    let BOARD_WIDTH = 800;
+    
+    // pixel height
+    let BOARD_HEIGHT = 800;
+
+    // ##### 'constants' loaded from game object #####
+    
+    // tile colors
+    let PRIMARY_TILE_COLOR,SECONDARY_TILE_COLOR;
+    
+    // board dimensions
+    let NUM_TILES_WIDE,NUM_TILES_TALL;
+    
+    // tile pixel measurements
+    let BOARD_TILE_WIDTH_SIZE,BOARD_TILE_HEIGHT_SIZE;
+    
+    // array of p5 images representing pieces
+    // index here is index in game object board representation
+    // i.e. -index is black, +index is white
+    let sprites = [];
+
+    // ##### end constants loaded from game object #####
+
+    // fixed colors
+    let WHITE_COLOR,BLACK_COLOR,HOVER_COLOR;
+
+    // tile coordinates when mouse is pressed
+    let selectedCoords = {x: -1, y: -1};
+
+    // template object representing what may be sent from the backend
+    let game = Game();
+
+    // p5 function called upon initial canvas creation
+    // set / calculate game specific constants and load images
+    function preload(){
+        NUM_TILES_TALL = game.dimensions.height;
+        NUM_TILES_WIDE = game.dimensions.width;
+        BOARD_TILE_WIDTH_SIZE = BOARD_WIDTH/NUM_TILES_WIDE;
+        BOARD_TILE_HEIGHT_SIZE = BOARD_HEIGHT/NUM_TILES_TALL;
+        for(let idx in game.pieces){
+            if(idx == 0) continue // :)
+            sprites[-idx] = loadImage('static/media/chess_sprites/black_'+game.pieces[idx].name+".png");
+            sprites[idx] = loadImage('static/media/chess_sprites/white_'+game.pieces[idx].name+".png");
+        }
+        PRIMARY_TILE_COLOR = color(game.primaryTileColor);
+        SECONDARY_TILE_COLOR = color(game.secondaryTileColor);
+    }
+
+    // initial p5 function called to create canvas
+    // create canvas and board-agnostic colors
+    function setup(){
+        let canvas = createCanvas(BOARD_WIDTH,BOARD_WIDTH);
+        canvas.parent('container');
+        WHITE_COLOR = color(255,255,255);
+        BLACK_COLOR = color(0,0,0);
+        HOVER_COLOR = color("yellow");
+    }
+
+    // core p5 draw function
+    // all draw functions should be called from here
+    function draw(){
+        drawTiles();
+        drawFrame();
+        drawPieces();
+        handleInput();
+    }
+
+    function handleInput(){}
+
+    // p5 function for when mouse is pressed down
+    // set selected coords to the coords of the tile the mouse is over
+    function mousePressed(){
+        selectedCoords.x = mouseXToTile();
+        selectedCoords.y = mouseYToTile();
+    }
+
+    // p5 function for when mouse is released
+    // wipe selected coords and handle piece movement (sloppily) if necessary
+    function mouseReleased(){
+        let tileX, tileY;
+        tileX = mouseXToTile();
+        tileY = mouseYToTile();
+        if(selectedCoords.x != -1 && selectedCoords.y != -1 && tileX >= 0 && tileY >= 0 && tileX < game.dimensions.width && tileY < game.dimensions.height){
+            // premoving
+            // if(game.playerTurn !== playerTurn){}
+            
+            if(tileX !== selectedCoords.x || tileY !== selectedCoords.y /*&& game.moveIsValid(selectedCoords.x, selectedCoords.y, tileX, tileY)*/){
+                game.board[tileY][tileX] = game.board[selectedCoords.y][selectedCoords.x];
+                game.board[selectedCoords.y][selectedCoords.x] = 0;
+            }
+        }
+        selectedCoords.x = -1;
+        selectedCoords.y = -1;
+    }
+
+    // iterates through game object board representation
+    // and draws piece sprites on board
+    // or at mouse cursor if the piece is selected
+    function drawPieces(){
+        for(let y in game.board)
+            for(let x in game.board[y]){
+                if(game.board[y][x] == 0) continue; // :)
+                if(selectedCoords.x == x && selectedCoords.y == y)
+                    image(sprites[game.board[y][x]], mouseX-BOARD_TILE_WIDTH_SIZE/2, mouseY-BOARD_TILE_HEIGHT_SIZE/2, BOARD_TILE_WIDTH_SIZE, BOARD_TILE_HEIGHT_SIZE);
+                else
+                    image(sprites[game.board[y][x]], x*BOARD_TILE_WIDTH_SIZE, y*BOARD_TILE_HEIGHT_SIZE, BOARD_TILE_WIDTH_SIZE, BOARD_TILE_HEIGHT_SIZE);
+                
+            }
+    }
+
+    // draw border around canvas
+    function drawFrame(){
+        noFill();
+        stroke(BLACK_COLOR);
+        strokeWeight(12);
+        rect(0,0,BOARD_WIDTH,BOARD_HEIGHT);
+    }
+
+    // given tile x, y coordinates
+    // determines if mouse is hovering over a piece
+    // returns true if the mouse is hovering over a tile that contains a piece, false otherwise
+    function mouseIsOverPiece(x, y){
+        return mouseX && mouseY && // mouse is within canvas, canvas has focus
+        mouseXToTile()==x && mouseYToTile()==y && // mouse is within this specific tile
+        game.board[y][x] != 0; // this tile contains a piece
+        // && game.playerTurn = playerTurn // its this player's turn (premoves make this silly)
+    }
+
+    // converts mouse x pixel position to x tile coordinate
+    function mouseXToTile(){
+        return mouseX < 0 ? -1 : intdiv(mouseX,BOARD_TILE_WIDTH_SIZE);
+    }
+
+    // converts mouse y pixel position to y tile coordinate
+    function mouseYToTile(){
+        return mouseY < 0 ? -1 : intdiv(mouseY,BOARD_TILE_HEIGHT_SIZE);
+    }
+
+    // draw board tiles
+    // assumes rectangular board
+    // handles coloring of tile when mouse is hovering over a piece
+    function drawTiles(){
+        noStroke();
+        for(let y = 0; y < NUM_TILES_TALL; y++)
+            for(let x = 0; x < NUM_TILES_WIDE; x++){
+                if(mouseIsOverPiece(x, y) && selectedCoords.x == -1 && selectedCoords.y == -1) fill(HOVER_COLOR);
+                else if((x+y)%2==0) fill(PRIMARY_TILE_COLOR);
+                else fill(SECONDARY_TILE_COLOR);
+                square(x*BOARD_TILE_WIDTH_SIZE, y*BOARD_TILE_HEIGHT_SIZE, BOARD_TILE_WIDTH_SIZE);
+            }
+    }
+</script>
+{% endblock %}
