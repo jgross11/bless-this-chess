@@ -92,7 +92,7 @@
             // premoving
             // if(game.playerTurn !== playerTurn){}
             
-            if(tileX !== selectedCoords.x || tileY !== selectedCoords.y /*&& game.moveIsValid(selectedCoords.x, selectedCoords.y, tileX, tileY)*/){
+            if((tileX !== selectedCoords.x || tileY !== selectedCoords.y) && game.isValidMove(selectedCoords.x, selectedCoords.y, tileX, tileY)){
                 game.board[tileY][tileX] = game.board[selectedCoords.y][selectedCoords.x];
                 game.board[selectedCoords.y][selectedCoords.x] = 0;
             }
@@ -109,11 +109,12 @@
             for(let x in game.board[y]){
                 if(game.board[y][x] == 0) continue; // :)
                 if(selectedCoords.x == x && selectedCoords.y == y)
-                    image(sprites[game.board[y][x]], mouseX-BOARD_TILE_WIDTH_SIZE/2, mouseY-BOARD_TILE_HEIGHT_SIZE/2, BOARD_TILE_WIDTH_SIZE, BOARD_TILE_HEIGHT_SIZE);
+                    continue; // draw selected piece over all other pieces last
                 else
                     image(sprites[game.board[y][x]], x*BOARD_TILE_WIDTH_SIZE, y*BOARD_TILE_HEIGHT_SIZE, BOARD_TILE_WIDTH_SIZE, BOARD_TILE_HEIGHT_SIZE);
-                
             }
+        if(selectedCoords.x !== -1 && selectedCoords.y !== -1 && game.board[selectedCoords.y][selectedCoords.x] !== 0)
+            image(sprites[game.board[selectedCoords.y][selectedCoords.x]], mouseX-BOARD_TILE_WIDTH_SIZE/2, mouseY-BOARD_TILE_HEIGHT_SIZE/2, BOARD_TILE_WIDTH_SIZE, BOARD_TILE_HEIGHT_SIZE);
     }
 
     // draw border around canvas
