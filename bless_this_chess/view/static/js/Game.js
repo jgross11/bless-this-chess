@@ -13,8 +13,8 @@ Game = () => {
             [ 0, 0, 0, 0, 0, 0, 0, 0],  // values are indices in pieces array (below)
             [ 0, 0, 0, 0, 0, 0, 0, 0],  // zero is empty space
             [ 0, 0, 0, 0, 0, 0, 0, 0],  // yes this isn't extendable to n players
-            [ 0, 0, 0, 0, 0, 0, 0, 0],  // value could be nk, where k is index and n is player #
-            [ 1, 1, 1, 1, 1, 1, 1, 1],
+            [ 0, 0, 0, 0, 0, 0, 0, 0],  // value could be (n*10)+k, where k is index and n is player #
+            [ 1, 1, 1, 1, 1, 1, 1, 1],  // better if bit shifted
             [ 2, 3, 4, 5, 6, 4, 3, 2]
         ],
         primaryTileColor: "white",      // tile colors
