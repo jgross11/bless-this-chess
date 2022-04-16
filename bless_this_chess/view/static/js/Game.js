@@ -219,11 +219,18 @@ Game = () => {
         ],
 
         // determine if x and y are within bounds of (assumed filled rectangular) board
+        // this can very easily be modified to accomodate a board of any size / swiss-cheesiness 
+        // by populating the square border of the actual shape of the board with a special value
+        // to indicate a tile pieces can't move to
         coordsInBoard(x,y){ 
             return 0 <= x && x < this.dimensions.width && 0 <= y && y < this.dimensions.height
         },
 
         isValidMove(pieceX, pieceY, newX, newY){
+
+            // don't process silly move requests
+            if(!this.coordsInBoard(pieceX, pieceY) || !this.coordsInBoard(newX, newY)) return false;
+
             // get type of piece at this position
             let pieceIndex = this.board[pieceY][pieceX];
 
@@ -240,36 +247,52 @@ Game = () => {
                 let newPieceX = pieceX + move.dx;
                 let newPieceY = pieceY + move.dy;
 
-                // if a one-off move (pawn, king, knight)
-                if(move.type == 0) {
-                    if(newPieceX == newX && newPieceY == newY){
-                        return true;
-                    }
-                }
-                // if a rule-like move (bishop, queen, rook)
-                else if(move.type == 1){
-                    let multiplier = 1;
+                // go to next move if this move isn't on board
+                if(!this.coordsInBoard(newPieceX, newPieceY)) continue;
+                
+                // get info on piece that (may) occupy the desired tile
+                let pieceOnCheckedTile = this.board[newPieceY][newPieceX];
 
-                    // move along the formulaic path described by this move rule until you're off the board
-                    // checking if the path lands on the selected tile
-                    while(this.coordsInBoard(newPieceX, newPieceY)){
-                        if(newPieceX == newX && newPieceY == newY)
-                            return true;
-                        else {
-                            multiplier++;
-                            newPieceX = pieceX + (move.dx * multiplier);
-                            newPieceY = pieceY + (move.dy * multiplier);
-                        }
-                    }
+                // if a one-off move (pawn, king, knight)
+                if(move.type === 0){
+                    if(newPieceX === newX && newPieceY === newY && !this.piecesOnSameTeam(pieceIndex, pieceOnCheckedTile)) 
+                        return true;
+                }
+
+                // if a rule-like move (bishop, queen, rook)
+                else if(move.type === 1){
+                    let multiplier = 1;
+                    do {
+                        pieceOnCheckedTile = this.board[newPieceY][newPieceX];
+                        // will have to change when considering friendly capture gamemodes
+                        if(newPieceX === newX && newPieceY === newY && !this.piecesOnSameTeam(pieceIndex, pieceOnCheckedTile)) return true;
+                        else if(pieceOnCheckedTile != 0) break; // very sneaky :)
+
+                        // calculate next tile along formulaic path 
+                        multiplier++;
+                        newPieceX = pieceX + (move.dx * multiplier);
+                        newPieceY = pieceY + (move.dy * multiplier);
+                    } while(this.coordsInBoard(newPieceX, newPieceY));
                 }
             }
             // if you get here, the piece cannot move to the targeted tile
+            // all above "return true" will have to instead set a flag to indicate if 
+            // move should be simulated or not, as checking if a piece's moveset allows
+            // it to move to a tile doesn't mean moving to that tile is valid within 
+            // the scope of the game (i.e. move a piece that was pinned to a king in regular rules)
 
             // simulate move
             // if game over rules hold
             return false;
+        },
+
+        // will have to modify to account for > 2 player games
+        // as this relies on player 1 pieces being positive and player 2 pieces being negative
+        piecesOnSameTeam(piece1, piece2){
+            return (piece1 > 0 && piece2 > 0) || (piece1 < 0 && piece2 < 0);
         }
     }
+
     return obj;
 };
 
